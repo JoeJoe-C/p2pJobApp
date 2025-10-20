@@ -21,6 +21,32 @@ namespace WebService.Controllers
             _context = context;
         }
 
+        //get api/JobResults/client
+        [Route("client")]
+        [HttpGet]
+        public async Task<IActionResult> GetJobResultsByClient()
+        {
+            if (_context.JobResult == null || _context.Clients == null)
+            {
+                return NotFound();
+            }
+            var clients = await _context.Clients
+                .Join(
+                    _context.JobResult,
+                    c => c.Id,
+                    j => j.ClientId,
+                    (c, j) => new
+                    {
+                        ClientId = c.Id,
+                        JobResultId = j.Id,
+                        ClientIp = c.IpAddress,
+                        ClientPort = c.Port,
+                        Result = j.Result
+                    })
+                .ToListAsync();
+            return Ok(clients);
+        }
+
         // GET: api/JobResults
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JobResult>>> GetJobResult()
