@@ -11,7 +11,7 @@ using WebService.Data;
 namespace WebService.Migrations
 {
     [DbContext(typeof(DBManager))]
-    [Migration("20251018032907_InitialCreate")]
+    [Migration("20251019180127_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -37,6 +37,24 @@ namespace WebService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("WebService.Models.JobResult", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Result")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("JobResult");
                 });
 #pragma warning restore 612, 618
         }

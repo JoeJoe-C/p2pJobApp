@@ -23,6 +23,20 @@ namespace WebService.Migrations
                 {
                     table.PrimaryKey("PK_Clients", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "JobResult",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ClientId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Result = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobResult", x => x.Id);
+                });
         }
 
         /// <inheritdoc />
@@ -30,6 +44,9 @@ namespace WebService.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Clients");
+
+            migrationBuilder.DropTable(
+                name: "JobResult");
         }
     }
 }

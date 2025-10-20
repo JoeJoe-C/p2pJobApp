@@ -35,6 +35,24 @@ namespace WebService.Migrations
 
                     b.ToTable("Clients");
                 });
+
+            modelBuilder.Entity("WebService.Models.JobResult", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Result")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("JobResult");
+                });
 #pragma warning restore 612, 618
         }
     }
