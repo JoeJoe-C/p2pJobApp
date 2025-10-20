@@ -87,14 +87,39 @@ namespace WebService.Controllers
         [HttpPost]
         public async Task<ActionResult<Client>> PostClient([FromBody] Client client)
         {
-          if (_context.Clients == null)
-          {
-              return Problem("Entity set 'DBManager.Clients'  is null.");
-          }
+            if (_context.Clients == null)
+            {
+                return Problem("Entity set 'DBManager.Clients'  is null.");
+            }
+
             _context.Clients.Add(client);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetClient", new { id = client.Id }, client);
+        }
+
+        // POST: api/Clients/Register
+        [Route("Register")]
+        [HttpPost]
+        public async Task<ActionResult<Client>> RegisterClient([FromBody] Client client)
+        {
+            if (_context.Clients == null)
+            {
+                return Problem("Entity set 'DBManager.Clients'  is null.");
+            }
+            //if a client with the same IP address and port already exists, return it
+            var existingClient = _context.Clients.FirstOrDefault(c => c.IpAddress == client.IpAddress && c.Port == client.Port);
+            if (existingClient != null)
+            {
+                //if it is an existing client, set IsActive to true
+                await _context.SaveChangesAsync();
+                return Ok(existingClient);
+            }
+            else
+            {
+                _context.Clients.Add(client);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetClient", new { id = client.Id }, client);
+            }
         }
 
         // DELETE: api/Clients/5
